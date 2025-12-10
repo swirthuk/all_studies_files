@@ -1,0 +1,12 @@
+t = 0:0.1:4*%pi;
+x1 = sin(t);
+y1 = sin(2*t);
+z1 = t/5;
+x2 = cos(t);
+y2 = cos(2*t);
+z2 = sin(t);
+param3d([x1; x2], [y1; y2], [z1; z2]);
+title('График двух параметрических линий');
+xlabel('Ось X');
+ylabel('Ось Y');
+zlabel('Ось Z');

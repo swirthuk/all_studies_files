@@ -1,0 +1,45 @@
+﻿  meowmeow.cpp
+C:\Users\atant\source\repos\meowmeow\meowmeow\meowmeow.cpp(8,15): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\atant\source\repos\meowmeow\meowmeow\meowmeow.cpp(10,18): warning C4244: +=: преобразование "double" в "int", возможна потеря данных
+C:\Users\atant\source\repos\meowmeow\meowmeow\meowmeow.cpp(16,16): error C2187: синтаксическая ошибка: непредвиденный здесь элемент "константа"
+C:\Users\atant\source\repos\meowmeow\meowmeow\meowmeow.cpp(16,17): error C2059: синтаксическая ошибка: ;
+C:\Users\atant\source\repos\meowmeow\meowmeow\meowmeow.cpp(16,26): error C2143: синтаксическая ошибка: отсутствие ";" перед "]"
+C:\Users\atant\source\repos\meowmeow\meowmeow\meowmeow.cpp(16,26): error C2059: синтаксическая ошибка: ]
+C:\Users\atant\source\repos\meowmeow\meowmeow\meowmeow.cpp(17,5): error C2664: "int square_sum(const std::vector<int,std::allocator<int>> &)": невозможно преобразовать аргумент 1 из "int []" в "const std::vector<int,std::allocator<int>> &"
+      C:\Users\atant\source\repos\meowmeow\meowmeow\meowmeow.cpp(17,16):
+      Причина: невозможно преобразовать "int []" в "const std::vector<int,std::allocator<int>>"
+      C:\Users\atant\source\repos\meowmeow\meowmeow\meowmeow.cpp(17,16):
+      "std::vector<int,std::allocator<int>>::vector": ни одна перегруженная функция не может преобразовать все типы аргументов
+          C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\vector(650,5):
+          может быть "std::vector<int,std::allocator<int>>::vector(std::initializer_list<_Ty>,const _Alloc &)"
+          with
+          [
+              _Ty=int,
+              _Alloc=std::allocator<int>
+          ]
+              C:\Users\atant\source\repos\meowmeow\meowmeow\meowmeow.cpp(17,16):
+              "std::vector<int,std::allocator<int>>::vector(std::initializer_list<_Ty>,const _Alloc &)": невозможно преобразовать аргумент 1 из "int []" в "std::initializer_list<_Ty>"
+          with
+          [
+              _Ty=int,
+              _Alloc=std::allocator<int>
+          ]
+          and
+          [
+              _Ty=int
+          ]
+                  C:\Users\atant\source\repos\meowmeow\meowmeow\meowmeow.cpp(17,16):
+                  Для преобразования требуется второй оператор пользовательского преобразования или конструктор
+          C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\vector(623,5):
+          или       "std::vector<int,std::allocator<int>>::vector(_Iter,_Iter,const _Alloc &)"
+          with
+          [
+              _Alloc=std::allocator<int>
+          ]
+          C:\Users\atant\source\repos\meowmeow\meowmeow\meowmeow.cpp(17,16):
+          при попытке сопоставить список аргументов "(int [])"
+      C:\Users\atant\source\repos\meowmeow\meowmeow\meowmeow.cpp(6,5):
+       см. объявление "square_sum"
+      C:\Users\atant\source\repos\meowmeow\meowmeow\meowmeow.cpp(17,5):
+      при попытке сопоставить список аргументов "(int [])"
+  

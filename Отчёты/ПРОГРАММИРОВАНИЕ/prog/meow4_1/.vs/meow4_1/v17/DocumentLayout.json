@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\atant\\source\\repos\\meow4_1\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{D5A35B02-B035-4876-8D0C-E1AFD4382D59}|meow4_1\\meow4_1.vcxproj|C:\\Users\\atant\\source\\repos\\meow4_1\\meow4_1\\meow4_1.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{D5A35B02-B035-4876-8D0C-E1AFD4382D59}|meow4_1\\meow4_1.vcxproj|solutionrelative:meow4_1\\meow4_1.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "meow4_1.cpp",
+              "DocumentMoniker": "C:\\Users\\atant\\source\\repos\\meow4_1\\meow4_1\\meow4_1.cpp",
+              "RelativeDocumentMoniker": "meow4_1\\meow4_1.cpp",
+              "ToolTip": "C:\\Users\\atant\\source\\repos\\meow4_1\\meow4_1\\meow4_1.cpp",
+              "RelativeToolTip": "meow4_1\\meow4_1.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-10-12T10:59:03.582Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

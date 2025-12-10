@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\atant\\source\\repos\\exam\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{20A56D72-E9F3-4AC8-8EB8-B85B725D5A95}|exam\\exam.vcxproj|C:\\Users\\atant\\source\\repos\\exam\\exam\\exam.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{20A56D72-E9F3-4AC8-8EB8-B85B725D5A95}|exam\\exam.vcxproj|solutionrelative:exam\\exam.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "exam.cpp",
+              "DocumentMoniker": "C:\\Users\\atant\\source\\repos\\exam\\exam\\exam.cpp",
+              "RelativeDocumentMoniker": "exam\\exam.cpp",
+              "ToolTip": "C:\\Users\\atant\\source\\repos\\exam\\exam\\exam.cpp",
+              "RelativeToolTip": "exam\\exam.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-07-29T05:49:12.465Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

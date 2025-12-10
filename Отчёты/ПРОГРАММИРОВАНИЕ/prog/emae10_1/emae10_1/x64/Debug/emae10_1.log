@@ -1,0 +1,4 @@
+﻿  emae10_1.cpp
+C:\Users\atant\source\repos\emae10_1\emae10_1\emae10_1.cpp(29,12): warning C4244: return: преобразование "float" в "int", возможна потеря данных
+C:\Users\atant\source\repos\emae10_1\emae10_1\emae10_1.cpp(51,13): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+  emae10_1.vcxproj -> C:\Users\atant\source\repos\emae10_1\x64\Debug\emae10_1.exe

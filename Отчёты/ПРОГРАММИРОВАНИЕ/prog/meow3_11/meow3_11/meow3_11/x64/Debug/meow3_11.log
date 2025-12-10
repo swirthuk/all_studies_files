@@ -1,0 +1,3 @@
+﻿  meow3_11.cpp
+C:\Users\atant\source\repos\meow3_11\meow3_11\meow3_11.cpp(10,15): warning C4244: +=: преобразование "double" в "int", возможна потеря данных
+  meow3_11.vcxproj -> C:\Users\atant\source\repos\meow3_11\meow3_11\x64\Debug\meow3_11.exe

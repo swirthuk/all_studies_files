@@ -1,0 +1,3 @@
+﻿  meow4_1.cpp
+C:\Users\atant\source\repos\meow4_1\meow4_1\meow4_1.cpp(9,15): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
+  meow4_1.vcxproj -> C:\Users\atant\source\repos\meow4_1\x64\Debug\meow4_1.exe

@@ -1,0 +1,11 @@
+u = linspace(0, 2*%pi, 50);
+v = linspace(0, 5*%pi, 50);
+x = (cos(u).*u)'*(1+cos(v/2));
+y = (u/2)'*sin(v);
+z = (sin(u).*u)'*(1+cos(v/2));
+plot3d2(x, y, z);
+title('Трехмерный график поверхности');
+xlabel('Ось X');
+ylabel('Ось Y');
+zlabel('Ось Z');
+f = gcf();

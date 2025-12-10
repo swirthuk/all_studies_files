@@ -1,0 +1,4 @@
+﻿  emae6_3.cpp
+C:\Users\atant\source\repos\emae6_3\emae6_3\emae6_3.cpp(25,25): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\atant\source\repos\emae6_3\emae6_3\emae6_3.cpp(51,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  emae6_3.vcxproj -> C:\Users\atant\source\repos\emae6_3\x64\Debug\emae6_3.exe

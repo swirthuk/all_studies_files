@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\atant\\source\\repos\\9_1_var_4\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{D5EAC310-09EA-4A72-988C-34D5085FB73F}|9_1_var_4\\9_1_var_4.vcxproj|C:\\Users\\atant\\source\\repos\\9_1_var_4\\9_1_var_4\\9_1_var_4.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{D5EAC310-09EA-4A72-988C-34D5085FB73F}|9_1_var_4\\9_1_var_4.vcxproj|solutionrelative:9_1_var_4\\9_1_var_4.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "9_1_var_4.cpp",
+              "DocumentMoniker": "C:\\Users\\atant\\source\\repos\\9_1_var_4\\9_1_var_4\\9_1_var_4.cpp",
+              "RelativeDocumentMoniker": "9_1_var_4\\9_1_var_4.cpp",
+              "ToolTip": "C:\\Users\\atant\\source\\repos\\9_1_var_4\\9_1_var_4\\9_1_var_4.cpp",
+              "RelativeToolTip": "9_1_var_4\\9_1_var_4.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAKUAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-05-19T05:32:22.543Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

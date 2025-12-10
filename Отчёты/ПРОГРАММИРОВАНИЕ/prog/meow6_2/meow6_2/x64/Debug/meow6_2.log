@@ -1,0 +1,4 @@
+﻿  meow6_2.cpp
+C:\Users\atant\source\repos\meow6_2\meow6_2\meow6_2.cpp(9,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+C:\Users\atant\source\repos\meow6_2\meow6_2\meow6_2.cpp(44,9): warning C4101: maxi: неиспользованная локальная переменная
+  meow6_2.vcxproj -> C:\Users\atant\source\repos\meow6_2\x64\Debug\meow6_2.exe

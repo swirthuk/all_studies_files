@@ -1,0 +1,3 @@
+﻿  meow5_1.cpp
+C:\Users\atant\source\repos\meow5_1\meow5_1\meow5_1.cpp(7,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  meow5_1.vcxproj -> C:\Users\atant\source\repos\meow5_1\x64\Debug\meow5_1.exe

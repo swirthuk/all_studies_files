@@ -1,0 +1,4 @@
+﻿  emae1_3.cpp
+C:\Users\atant\source\repos\emae1_3\emae1_3\emae1_3.cpp(29,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+C:\Users\atant\source\repos\emae1_3\emae1_3\emae1_3.cpp(25,1): warning C4715: ex2: значение возвращается не при всех путях выполнения
+  emae1_3.vcxproj -> C:\Users\atant\source\repos\emae1_3\emae1_3\x64\Debug\emae1_3.exe

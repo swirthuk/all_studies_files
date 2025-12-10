@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\atant\\source\\repos\\OOP\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{27CD9115-5099-4A6A-A479-3DD9DCD27686}|OOP\\OOP.vcxproj|C:\\Users\\atant\\source\\repos\\OOP\\OOP\\OOP.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{27CD9115-5099-4A6A-A479-3DD9DCD27686}|OOP\\OOP.vcxproj|solutionrelative:OOP\\OOP.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "OOP.cpp",
+              "DocumentMoniker": "C:\\Users\\atant\\source\\repos\\OOP\\OOP\\OOP.cpp",
+              "RelativeDocumentMoniker": "OOP\\OOP.cpp",
+              "ToolTip": "C:\\Users\\atant\\source\\repos\\OOP\\OOP\\OOP.cpp",
+              "RelativeToolTip": "OOP\\OOP.cpp",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAACkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-05-23T15:40:45.183Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

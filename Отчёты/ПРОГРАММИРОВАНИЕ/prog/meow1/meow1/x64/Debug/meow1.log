@@ -1,0 +1,9 @@
+﻿  meow1.cpp
+C:\Users\atant\source\repos\meow1\meow1\meow1.cpp(11,12): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\Users\atant\source\repos\meow1\meow1\meow1.cpp(12,11): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\Users\atant\source\repos\meow1\meow1\meow1.cpp(13,25): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\Users\atant\source\repos\meow1\meow1\meow1.cpp(15,12): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\Users\atant\source\repos\meow1\meow1\meow1.cpp(17,10): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\Users\atant\source\repos\meow1\meow1\meow1.cpp(18,10): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\Users\atant\source\repos\meow1\meow1\meow1.cpp(19,15): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+  meow1.vcxproj -> C:\Users\atant\source\repos\meow1\x64\Debug\meow1.exe

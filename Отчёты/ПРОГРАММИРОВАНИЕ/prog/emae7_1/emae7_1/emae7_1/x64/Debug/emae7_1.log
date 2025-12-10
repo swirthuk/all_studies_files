@@ -1,0 +1,3 @@
+﻿  emae7_1.cpp
+C:\Users\atant\source\repos\emae7_1\emae7_1\emae7_1.cpp(9,1): warning C4715: PowerN: значение возвращается не при всех путях выполнения
+  emae7_1.vcxproj -> C:\Users\atant\source\repos\emae7_1\emae7_1\x64\Debug\emae7_1.exe

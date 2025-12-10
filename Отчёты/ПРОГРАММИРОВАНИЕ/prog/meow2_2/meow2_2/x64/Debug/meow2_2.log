@@ -1,0 +1,5 @@
+﻿  meow2_2.cpp
+C:\Users\atant\source\repos\meow2_2\meow2_2\meow2_2.cpp(14,7): warning C4305: =: усечение из "double" в "float"
+C:\Users\atant\source\repos\meow2_2\meow2_2\meow2_2.cpp(18,7): warning C4305: =: усечение из "double" в "float"
+C:\Users\atant\source\repos\meow2_2\meow2_2\meow2_2.cpp(19,12): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+  meow2_2.vcxproj -> C:\Users\atant\source\repos\meow2_2\x64\Debug\meow2_2.exe

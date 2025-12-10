@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\atant\\source\\repos\\meow5_5\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{28028828-C161-421C-8E61-656848B6A01A}|meow5_5\\meow5_5.vcxproj|C:\\Users\\atant\\source\\repos\\meow5_5\\meow5_5\\meow5_5.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{28028828-C161-421C-8E61-656848B6A01A}|meow5_5\\meow5_5.vcxproj|solutionrelative:meow5_5\\meow5_5.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "meow5_5.cpp",
+              "DocumentMoniker": "C:\\Users\\atant\\source\\repos\\meow5_5\\meow5_5\\meow5_5.cpp",
+              "RelativeDocumentMoniker": "meow5_5\\meow5_5.cpp",
+              "ToolTip": "C:\\Users\\atant\\source\\repos\\meow5_5\\meow5_5\\meow5_5.cpp",
+              "RelativeToolTip": "meow5_5\\meow5_5.cpp",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABMAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-10-15T15:39:09.251Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

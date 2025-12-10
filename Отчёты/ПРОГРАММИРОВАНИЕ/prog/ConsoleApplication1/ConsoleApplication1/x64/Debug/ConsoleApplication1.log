@@ -1,0 +1,5 @@
+﻿  ConsoleApplication1.cpp
+C:\Users\atant\source\repos\ConsoleApplication1\ConsoleApplication1\ConsoleApplication1.cpp(7,6): warning C4305: =: усечение из "double" в "float"
+C:\Users\atant\source\repos\ConsoleApplication1\ConsoleApplication1\ConsoleApplication1.cpp(8,6): warning C4305: =: усечение из "double" в "float"
+C:\Users\atant\source\repos\ConsoleApplication1\ConsoleApplication1\ConsoleApplication1.cpp(9,81): error C3861: ctg: идентификатор не найден
+C:\Users\atant\source\repos\ConsoleApplication1\ConsoleApplication1\ConsoleApplication1.cpp(9,125): error C2143: синтаксическая ошибка: отсутствие ")" перед ";"

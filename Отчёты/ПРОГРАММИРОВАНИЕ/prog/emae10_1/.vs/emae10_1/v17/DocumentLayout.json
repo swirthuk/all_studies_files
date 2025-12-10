@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\atant\\source\\repos\\emae10_1\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{ABC5446F-E52B-4BA0-ACBA-ECF65AD43D85}|emae10_1\\emae10_1.vcxproj|C:\\Users\\atant\\source\\repos\\emae10_1\\emae10_1\\emae10_1.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{ABC5446F-E52B-4BA0-ACBA-ECF65AD43D85}|emae10_1\\emae10_1.vcxproj|solutionrelative:emae10_1\\emae10_1.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "emae10_1.cpp",
+              "DocumentMoniker": "C:\\Users\\atant\\source\\repos\\emae10_1\\emae10_1\\emae10_1.cpp",
+              "RelativeDocumentMoniker": "emae10_1\\emae10_1.cpp",
+              "ToolTip": "C:\\Users\\atant\\source\\repos\\emae10_1\\emae10_1\\emae10_1.cpp",
+              "RelativeToolTip": "emae10_1\\emae10_1.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-03-31T15:15:57.353Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
