@@ -1,0 +1,8 @@
+﻿  laba2.1.cpp
+C:\Users\mdyu2\OneDrive\Рабочий стол\Учеба\ПОВС\laba2.1\laba2.1\laba2.1.cpp(31,16): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
+C:\Users\mdyu2\OneDrive\Рабочий стол\Учеба\ПОВС\laba2.1\laba2.1\laba2.1.cpp(73,21): warning C4456: объявление "pData" скрывает предыдущее локальное объявление
+C:\Users\mdyu2\OneDrive\Рабочий стол\Учеба\ПОВС\laba2.1\laba2.1\laba2.1.cpp(17,23): message : см. объявление "pData"
+C:\Users\mdyu2\OneDrive\Рабочий стол\Учеба\ПОВС\laba2.1\laba2.1\laba2.1.cpp(105,87): warning C4100: nCmdShow: неиспользованный формальный параметр
+C:\Users\mdyu2\OneDrive\Рабочий стол\Учеба\ПОВС\laba2.1\laba2.1\laba2.1.cpp(105,72): warning C4100: lpCmdLine: неиспользованный формальный параметр
+C:\Users\mdyu2\OneDrive\Рабочий стол\Учеба\ПОВС\laba2.1\laba2.1\laba2.1.cpp(105,51): warning C4100: hPrevInstance: неиспользованный формальный параметр
+  laba2.1.vcxproj -> C:\Users\mdyu2\OneDrive\Рабочий стол\Учеба\ПОВС\laba2.1\x64\Debug\laba2.1.exe

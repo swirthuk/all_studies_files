@@ -1,0 +1,6 @@
+﻿  Laba7.cpp
+C:\Users\mdyu2\OneDrive\Рабочий стол\Учеба\ПОВС\Laba7\Laba7\Laba7.cpp(16,74): warning C4100: lpCmdLine: неиспользованный формальный параметр
+C:\Users\mdyu2\OneDrive\Рабочий стол\Учеба\ПОВС\Laba7\Laba7\Laba7.cpp(16,53): warning C4100: hPrevInstance: неиспользованный формальный параметр
+C:\Users\mdyu2\OneDrive\Рабочий стол\Учеба\ПОВС\Laba7\Laba7\Laba7.cpp(71): warning C4312: <function-style-cast>: преобразование из "int" в "HMENU" большего размера
+C:\Users\mdyu2\OneDrive\Рабочий стол\Учеба\ПОВС\Laba7\Laba7\Laba7.cpp(86): warning C4312: <function-style-cast>: преобразование из "int" в "HMENU" большего размера
+  Laba7.vcxproj -> C:\Users\mdyu2\OneDrive\Рабочий стол\Учеба\ПОВС\Laba7\x64\Debug\Laba7.exe

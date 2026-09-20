@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\All_studies_files\\POVS\\FirstLab\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{19A3C2F4-A379-4996-B3FF-0D13E1C4FFD1}|FirstLab\\FirstLab.vcxproj|D:\\All_studies_files\\POVS\\FirstLab\\FirstLab\\FirstLab.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{19A3C2F4-A379-4996-B3FF-0D13E1C4FFD1}|FirstLab\\FirstLab.vcxproj|solutionrelative:FirstLab\\FirstLab.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "FirstLab.cpp",
+              "DocumentMoniker": "D:\\All_studies_files\\POVS\\FirstLab\\FirstLab\\FirstLab.cpp",
+              "RelativeDocumentMoniker": "FirstLab\\FirstLab.cpp",
+              "ToolTip": "D:\\All_studies_files\\POVS\\FirstLab\\FirstLab\\FirstLab.cpp*",
+              "RelativeToolTip": "FirstLab\\FirstLab.cpp*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-09-18T16:35:33.901Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

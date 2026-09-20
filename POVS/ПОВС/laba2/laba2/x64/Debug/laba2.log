@@ -1,0 +1,7 @@
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppClean.targets(77,5): warning : Отказано в доступе по пути "c:\users\mdyu2\onedrive\рабочий стол\учеба\повс\laba2\x64\debug\laba2.exe".
+  laba2.cpp
+C:\Users\mdyu2\OneDrive\Рабочий стол\Учеба\ПОВС\laba2\laba2\laba2.cpp(34,16): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
+C:\Users\mdyu2\OneDrive\Рабочий стол\Учеба\ПОВС\laba2\laba2\laba2.cpp(35,16): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
+C:\Users\mdyu2\OneDrive\Рабочий стол\Учеба\ПОВС\laba2\laba2\laba2.cpp(119,72): warning C4100: lpCmdLine: неиспользованный формальный параметр
+C:\Users\mdyu2\OneDrive\Рабочий стол\Учеба\ПОВС\laba2\laba2\laba2.cpp(119,51): warning C4100: hPrevInstance: неиспользованный формальный параметр
+LINK : fatal error LNK1104: не удается открыть файл "C:\Users\mdyu2\OneDrive\Рабочий стол\Учеба\ПОВС\laba2\x64\Debug\laba2.exe"

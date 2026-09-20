@@ -1,0 +1,4 @@
+﻿  laba6.cpp
+C:\Users\mdyu2\OneDrive\Рабочий стол\Учеба\ПОВС\laba6\laba6\laba6.cpp(14,72): warning C4100: lpCmdLine: неиспользованный формальный параметр
+C:\Users\mdyu2\OneDrive\Рабочий стол\Учеба\ПОВС\laba6\laba6\laba6.cpp(14,51): warning C4100: hPrevInstance: неиспользованный формальный параметр
+  laba6.vcxproj -> C:\Users\mdyu2\OneDrive\Рабочий стол\Учеба\ПОВС\laba6\x64\Debug\laba6.exe
