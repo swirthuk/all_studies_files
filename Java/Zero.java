@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 class NotEnoughDataException extends Exception {
@@ -26,7 +25,7 @@ class Zero {
     }
 
     public ArrayList<Integer> getLst() {
-        return lst;
+        return new ArrayList<>(lst);
     }
 
     public void setLst(ArrayList<Integer> lst) {
@@ -37,22 +36,21 @@ class Zero {
         ArrayList<Integer> result = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            try {
-                System.out.print("""
-                        Вводите положительные числа.
-                        Чтобы закончить ввод впишите -1""");
-                if (scanner.hasNextInt()) {
-                    int num = scanner.nextInt();
-                    if (num == -1 || num < 0)
-                        break;
+            System.out.print("""
+                    Вводите положительные числа.
+                    Чтобы закончить ввод впишите -1.
+                -> """);
+            if (scanner.hasNextInt()) {
+                int num = scanner.nextInt();
+                if (num == -1)
+                    break;
+                else if (num < 0)
+                    System.out.println("Число должно быть положительным. Попробуйте ещё раз.");
+                else
                     result.add(num);
-                } else {
-                    scanner.next();
-                    System.out.println("Это не число, попробуй ещё раз.");
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Ошибка ввода: " + e.getMessage());
+            } else {
                 scanner.next();
+                System.out.println("Это не число, попробуй ещё раз.");
             }
         }
         if (result.size() < 2) {
