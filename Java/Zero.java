@@ -37,9 +37,9 @@ class Zero {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.print("""
-                    Вводите положительные числа.
-                    Чтобы закончить ввод впишите -1.
-                -> """);
+                        Вводите положительные числа.
+                        Чтобы закончить ввод впишите -1.
+                    -> """);
             if (scanner.hasNextInt()) {
                 int num = scanner.nextInt();
                 if (num == -1)
@@ -79,7 +79,6 @@ class Zero {
         while (true) {
             System.out.print("""
                     Введите число (1 - 5):
-                    0. Заполнить массив числами;
                     1. Показать массив;
                     2. Ввести числа;
                     3. Сортировка по убыванию;
@@ -89,12 +88,6 @@ class Zero {
             choice = input.nextInt();
             switch (choice) {
                 case 0:
-                    try {
-                        enterDigits();
-                    } catch (NotEnoughDataException e) {
-                        System.out.println("Ошибка: " + e.getMessage());
-                    }
-                    break;
                 case 1:
                     if (hasEnoughData()) {
                         coutArray();
@@ -102,9 +95,17 @@ class Zero {
                         System.out.println("Недостаточно данных. Сначала заполните массив (минимум 2 числа).");
                     }
                     break;
+                case 2:
+                    try {
+                        enterDigits();
+                    } catch (NotEnoughDataException e) {
+                        System.out.println("Ошибка: " + e.getMessage());
+                    }
+                    break;
                 case 3:
                     if (hasEnoughData()) {
                         sortDesc();
+                        System.out.println("Массив отсортирован по убыванию.");
                     } else {
                         System.out.println("Недостаточно данных. Сначала заполните массив (минимум 2 числа).");
                     }
@@ -112,11 +113,13 @@ class Zero {
                 case 4:
                     if (hasEnoughData()) {
                         sortAsc();
+                        System.out.println("Массив отсортирован по возрастанию.");
                     } else {
                         System.out.println("Недостаточно данных. Сначала заполните массив (минимум 2 числа).");
                     }
                     break;
                 case 5:
+                    System.out.println("Завершение работы.");
                     return;
                 default:
                     System.out.println("Нет такого пункта.");
