@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\All_studies_files\\POVS\\TheSecond\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{E3540178-F144-4388-98B5-86672FF86984}|TheSecond\\TheSecond.vcxproj|D:\\All_studies_files\\POVS\\TheSecond\\TheSecond\\theSecond.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{E3540178-F144-4388-98B5-86672FF86984}|TheSecond\\TheSecond.vcxproj|solutionrelative:TheSecond\\theSecond.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "theSecond.cpp",
+              "DocumentMoniker": "D:\\All_studies_files\\POVS\\TheSecond\\TheSecond\\theSecond.cpp",
+              "RelativeDocumentMoniker": "TheSecond\\theSecond.cpp",
+              "ToolTip": "D:\\All_studies_files\\POVS\\TheSecond\\TheSecond\\theSecond.cpp",
+              "RelativeToolTip": "TheSecond\\theSecond.cpp",
+              "ViewState": "AgIAAJ0AAAAAAAAAAAAAALgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-10-03T10:52:28.683Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

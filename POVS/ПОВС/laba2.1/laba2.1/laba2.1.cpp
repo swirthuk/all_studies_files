@@ -1,115 +1,184 @@
 ﻿#define STRICT
 #define WIN32_LEAN_AND_MEAN 
+
+// Поддерживаемые значения N: 4, 6, 9
 #define NumOfRect 9
+
 #include <windows.h>
-#include <cmath>
 
 struct WindowData
 {
-    RECT rects[NumOfRect]; 
+    RECT rects[NumOfRect];
     int hover;
-    HBRUSH hBrush;
-    HBRUSH hHoverBrush;
+    int rows;
+    int cols;
 };
+
+// Функция определения сетки (строки x столбцы) для N = 4, 6, 9
+void GetGridDimensions(int n, int& rows, int& cols)
+{
+    switch (n)
+    {
+    case 4: rows = 2; cols = 2; break;
+    case 6: rows = 2; cols = 3; break;
+    case 9: rows = 3; cols = 3; break;
+    default: rows = 1; cols = n; break;
+    }
+}
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    static WindowData pData;
+    // Извлекаем указатель на данные экземпляра окна (без глобальных переменных)
+    WindowData* pData = (WindowData*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
+
     switch (msg)
     {
-    case WM_CREATE : {
-        pData.hover = -1;
-        pData.hBrush = CreateSolidBrush(RGB(255, 255, 255));
-        pData.hHoverBrush = CreateSolidBrush(RGB(255, 143, 0));
-        SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)&pData);
+    case WM_CREATE:
+    {
+        pData = new WindowData();
+        pData->hover = -1;
+        GetGridDimensions(NumOfRect, pData->rows, pData->cols);
+        SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)pData);
+        return 0;
     }
-   
+
     case WM_SIZE:
     {
+        if (!pData) break;
+
         RECT rc;
         GetClientRect(hwnd, &rc);
-        int dx = sqrt(NumOfRect);
-        int dy = NumOfRect / dx;
-        int width = rc.right / dy;
-        int height = rc.bottom / dx;
+
+        int clientWidth = rc.right - rc.left;
+        int clientHeight = rc.bottom - rc.top;
+
+        // Расчёт прямоугольников с точным заполнением без потерь на округление
         for (int i = 0; i < NumOfRect; ++i)
         {
-            pData.rects[i].left = (i % dy) * width;
-            pData.rects[i].top = (i / dy) * height;
-            pData.rects[i].right = pData.rects[i].left + width;
-            pData.rects[i].bottom = pData.rects[i].top + height;
+            int r = i / pData->cols;
+            int c = i % pData->cols;
+
+            pData->rects[i].left = (c * clientWidth) / pData->cols;
+            pData->rects[i].right = ((c + 1) * clientWidth) / pData->cols;
+            pData->rects[i].top = (r * clientHeight) / pData->rows;
+            pData->rects[i].bottom = ((r + 1) * clientHeight) / pData->rows;
         }
+
         InvalidateRect(hwnd, NULL, TRUE);
-        break;
+        return 0;
     }
 
     case WM_MOUSEMOVE:
     {
-        TRACKMOUSEEVENT tm;
-        tm.cbSize = sizeof(TRACKMOUSEEVENT);
-        tm.dwFlags = TME_LEAVE;
-        tm.hwndTrack = hwnd;
-        TrackMouseEvent(&tm);
-        int x = LOWORD(lParam);
-        int y = HIWORD(lParam);
-        int prev_hover = pData.hover;
-        pData.hover = -1;
+        if (!pData) break;
+
+        POINT pt = { LOWORD(lParam), HIWORD(lParam) };
+        int prevHover = pData->hover;
+        pData->hover = -1;
+
         for (int i = 0; i < NumOfRect; ++i)
         {
-            if (PtInRect(&pData.rects[i], { x, y }))
+            if (PtInRect(&pData->rects[i], pt))
             {
-                pData.hover = i;
+                pData->hover = i;
                 break;
             }
         }
-        if (pData.hover != prev_hover)
+
+        if (pData->hover != prevHover)
         {
-            InvalidateRect(hwnd, NULL, TRUE);
+            InvalidateRect(hwnd, NULL, FALSE);
         }
-        break;
+        return 0;
     }
-    case WM_MOUSELEAVE:
+
+    // По условию: при выходе курсора на неклиентскую область (рамка, заголовок)
+    case WM_NCMOUSEMOVE:
     {
-        WindowData* pData = (WindowData*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
-        pData->hover = -1;
-        InvalidateRect(hwnd, NULL, TRUE);
+        if (pData && pData->hover != -1)
+        {
+            pData->hover = -1;
+            InvalidateRect(hwnd, NULL, FALSE);
+        }
+        break; // Обязательно передаём дальше в DefWindowProc для работы заголовка и кнопок окна
     }
-    break;
+
     case WM_PAINT:
     {
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hwnd, &ps);
-        HPEN hPen = CreatePen(PS_SOLID, 2, RGB(0, 0, 0));
-        SelectObject(hdc, hPen);
-        for (int i = 0; i < NumOfRect; ++i)
 
+        if (pData)
         {
-            HBRUSH hCurrentBrush = (i == pData.hover) ? pData.hHoverBrush : pData.hBrush;
-            FillRect(hdc, &pData.rects[i], hCurrentBrush);
-            FrameRect(hdc, &pData.rects[i], (HBRUSH)GetStockObject(BLACK_BRUSH));
+            RECT clientRc;
+            GetClientRect(hwnd, &clientRc);
+
+            // 1. Закраска прямоугольников
+            for (int i = 0; i < NumOfRect; ++i)
+            {
+                COLORREF color = (i == pData->hover) ? RGB(255, 143, 0) : RGB(255, 255, 255);
+                HBRUSH hBrush = CreateSolidBrush(color);
+                FillRect(hdc, &pData->rects[i], hBrush);
+                DeleteObject(hBrush);
+            }
+
+            // 2. Разделительные прямые линии толщиной 2 пикселя через MoveToEx / LineTo
+            HPEN hPen = CreatePen(PS_SOLID, 2, RGB(0, 0, 0));
+            HPEN oPen = (HPEN)SelectObject(hdc, hPen);
+
+            // Вертикальные линии сетки
+            for (int c = 1; c < pData->cols; ++c)
+            {
+                int x = (c * clientRc.right) / pData->cols;
+                MoveToEx(hdc, x, 0, NULL);
+                LineTo(hdc, x, clientRc.bottom);
+            }
+
+            // Горизонтальные линии сетки
+            for (int r = 1; r < pData->rows; ++r)
+            {
+                int y = (r * clientRc.bottom) / pData->rows;
+                MoveToEx(hdc, 0, y, NULL);
+                LineTo(hdc, clientRc.right, y);
+            }
+
+            // Восстановление старого пера и удаление созданного
+            SelectObject(hdc, oPen);
+            DeleteObject(hPen);
         }
-        DeleteObject(hPen);
-        EndPaint(hwnd, &ps); 
+
+        EndPaint(hwnd, &ps);
+        return 0;
     }
-    break;
+
     case WM_DESTROY:
-        DeleteObject(pData.hBrush);
-        DeleteObject(pData.hHoverBrush);
+    {
+        if (pData)
+        {
+            delete pData;
+            SetWindowLongPtr(hwnd, GWLP_USERDATA, 0);
+        }
         PostQuitMessage(0);
-        break;
+        return 0;
+    }
+
     default:
         return DefWindowProc(hwnd, msg, wParam, lParam);
     }
-    return 0;
+
+    return DefWindowProc(hwnd, msg, wParam, lParam);
 }
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
     WNDCLASS wc = { 0 };
     wc.lpfnWndProc = WndProc;
     wc.hInstance = hInstance;
     wc.lpszClassName = TEXT("PARENT");
-    wc.hbrBackground = (HBRUSH)CreateSolidBrush(RGB(255, 255, 255));
+    wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+    wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
     RegisterClass(&wc);
+
     int widthWindow = 600;
     int heightWindow = 400;
 
@@ -118,15 +187,22 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     int dX = Area.left + (Area.right - Area.left - widthWindow) / 2;
     int dY = Area.top + (Area.bottom - Area.top - heightWindow) / 2;
 
-
-    HWND hwndMain = CreateWindow(TEXT("PARENT"), TEXT("My Window"), WS_OVERLAPPEDWINDOW | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_VISIBLE,
+    HWND hwndMain = CreateWindow(
+        TEXT("PARENT"),
+        TEXT("Grid Window"),
+        WS_OVERLAPPEDWINDOW | WS_VISIBLE,
         dX, dY, widthWindow, heightWindow,
-        NULL, NULL, hInstance, NULL);
+        NULL, NULL, hInstance, NULL
+    );
 
     if (!hwndMain)
     {
         return -1;
     }
+
+    ShowWindow(hwndMain, nCmdShow);
+    UpdateWindow(hwndMain);
+
     MSG msg;
     while (GetMessage(&msg, NULL, 0, 0))
     {
@@ -135,8 +211,3 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     }
     return 0;
 }
-
-
-
-
-

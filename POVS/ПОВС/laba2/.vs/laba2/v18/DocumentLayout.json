@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\All_studies_files\\POVS\\\u041F\u041E\u0412\u0421\\laba2\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{87EC9E92-2BDD-4DFD-8847-7F60211E0ED8}|laba2\\laba2.vcxproj|D:\\All_studies_files\\POVS\\\u041F\u041E\u0412\u0421\\laba2\\laba2\\laba2.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{87EC9E92-2BDD-4DFD-8847-7F60211E0ED8}|laba2\\laba2.vcxproj|solutionrelative:laba2\\laba2.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "laba2.cpp",
+              "DocumentMoniker": "D:\\All_studies_files\\POVS\\\u041F\u041E\u0412\u0421\\laba2\\laba2\\laba2.cpp",
+              "RelativeDocumentMoniker": "laba2\\laba2.cpp",
+              "ToolTip": "D:\\All_studies_files\\POVS\\\u041F\u041E\u0412\u0421\\laba2\\laba2\\laba2.cpp",
+              "RelativeToolTip": "laba2\\laba2.cpp",
+              "ViewState": "AgIAAGoAAAAAAAAAAAAowIIAAABfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-10-03T08:59:48.137Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

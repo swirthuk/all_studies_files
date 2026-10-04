@@ -1,4 +1,7 @@
-﻿#include <Windows.h>
+﻿#define  STRICT
+#define  WIN32_LEAN_AND_MEAN
+
+#include <Windows.h>
 
 // Предварительное объявление оконных процедур
 LRESULT CALLBACK MainWndProc(HWND, UINT, WPARAM, LPARAM);
@@ -20,22 +23,22 @@ int WINAPI WinMain(
 
     HWND hwnd;
     MSG  msg;
-    WNDCLASS wndclass = {};
+    WNDCLASS wndclass = {}; // Инициализация нулями
 
     // Базовые общие настройки классов
-    wndclass.style = CS_HREDRAW | CS_VREDRAW;
+    //wndclass.style = CS_HREDRAW | CS_VREDRAW; ??
     wndclass.hInstance = hInstance;
     wndclass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
     wndclass.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wndclass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+    wndclass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH); // Не пропадает окно
 
-    // 1. Регистрация класса главного окна
+    // Регистрация класса главного окна
     wndclass.lpfnWndProc = MainWndProc;
     wndclass.lpszClassName = szMainClass;
     if (!RegisterClass(&wndclass))
     {
         MessageBox(NULL, TEXT("Failed to register MainWin class!"), szMainClass, MB_ICONERROR);
-        return 0;
+        return 0; // что покупатель будет делать с этим?
     }
 
     // 2. Регистрация класса временного окна
@@ -62,7 +65,7 @@ int WINAPI WinMain(
         TEXT("Main Window"),
         WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, CW_USEDEFAULT,
-        CW_USEDEFAULT, CW_USEDEFAULT,
+        CW_USEDEFAULT, CW_USEDEFAULT, // что ето, зачем ето, как ето
         NULL, NULL, hInstance, NULL);
 
     if (!hwnd) {
@@ -101,11 +104,11 @@ int WINAPI WinMain(
     // Основной цикл сообщений
     while (GetMessage(&msg, NULL, 0, 0))
     {
-        TranslateMessage(&msg);
+        //TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
 
-    return (int)msg.wParam;
+    return 0;//?? (int)msg.wParam;
 }
 
 // Обработчик сообщений главного окна
@@ -163,11 +166,13 @@ LRESULT CALLBACK TempWndProc(HWND hwndTemp, UINT message, WPARAM wParam, LPARAM 
     case WM_RBUTTONDOWN:
     {
         LONG_PTR exStyle = GetWindowLongPtr(hwndTemp, GWL_EXSTYLE);
-
-        if (exStyle & WS_EX_TOPMOST)
+//Мы берем текущие расширенные стили окна (exStyle) и накладываем маску WS_EX_TOPMOST. 
+// Это проверка: "Включен ли у окна флаг поверх_всех_окон прямо сейчас?
+        if (exStyle & WS_EX_TOPMOST) // НАИОТЛИЧНЕЙШИЙ ВОПРОС
         {
             SetWindowPos(hwndTemp, HWND_NOTOPMOST, 0, 0, 0, 0,
-                SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_FRAMECHANGED);
+                SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_FRAMECHANGED); 
+            // какое окно меняем; поместить окно позади всех TOPMOST;...;не передавать фокус этому окну; заставить ОС пересчитать границы окна
         }
         else
         {
@@ -188,8 +193,8 @@ LRESULT CALLBACK ChildWndProc(HWND hwndChild, UINT message, WPARAM wParam, LPARA
     {
     case WM_DESTROY:
         // Сбрасываем дескриптор при закрытии, предотвращая обращение к мертвому окну
-        hChildWnd = NULL;
-        return 0;
+        hChildWnd = NULL; // зачем это, если уже была проверка
+        return 0; // способ заставить переменную сказать: «Этого окна больше не существует, дескриптор аннулирован».
     }
 
     return DefWindowProc(hwndChild, message, wParam, lParam);

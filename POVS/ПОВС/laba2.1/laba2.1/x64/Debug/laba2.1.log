@@ -1,8 +1,1 @@
-﻿  laba2.1.cpp
-C:\Users\mdyu2\OneDrive\Рабочий стол\Учеба\ПОВС\laba2.1\laba2.1\laba2.1.cpp(31,16): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-C:\Users\mdyu2\OneDrive\Рабочий стол\Учеба\ПОВС\laba2.1\laba2.1\laba2.1.cpp(73,21): warning C4456: объявление "pData" скрывает предыдущее локальное объявление
-C:\Users\mdyu2\OneDrive\Рабочий стол\Учеба\ПОВС\laba2.1\laba2.1\laba2.1.cpp(17,23): message : см. объявление "pData"
-C:\Users\mdyu2\OneDrive\Рабочий стол\Учеба\ПОВС\laba2.1\laba2.1\laba2.1.cpp(105,87): warning C4100: nCmdShow: неиспользованный формальный параметр
-C:\Users\mdyu2\OneDrive\Рабочий стол\Учеба\ПОВС\laba2.1\laba2.1\laba2.1.cpp(105,72): warning C4100: lpCmdLine: неиспользованный формальный параметр
-C:\Users\mdyu2\OneDrive\Рабочий стол\Учеба\ПОВС\laba2.1\laba2.1\laba2.1.cpp(105,51): warning C4100: hPrevInstance: неиспользованный формальный параметр
-  laba2.1.vcxproj -> C:\Users\mdyu2\OneDrive\Рабочий стол\Учеба\ПОВС\laba2.1\x64\Debug\laba2.1.exe
+﻿C:\Program Files\Microsoft Visual Studio\18\Community\MSBuild\Microsoft\VC\v180\Microsoft.CppBuild.targets(473,5): error MSB8020: Не удается найти средства сборки для Visual Studio 2022 (набор инструментов платформы = "v143"). Чтобы выполнить сборку с использованием средств сборки v143 установите средства сборки Visual Studio 2022.  Кроме того, можно выполнить обновление до текущей версии средств Visual Studio, перейдя в меню "Проект" или щелкнув решение правой кнопкой мыши и выбрав "Обновить решение...".
