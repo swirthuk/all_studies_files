@@ -3,6 +3,10 @@
 
 #include <Windows.h>
 
+struct windowData {
+    RECT hoveredRect;
+};
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 int WINAPI WinMain(
@@ -18,8 +22,6 @@ int WINAPI WinMain(
     wndclass.lpfnWndProc = WndProc;
     wndclass.hInstance = hInstance;
     wndclass.lpszClassName = szClass;
-    // Система не подставляет никакой «базовый» цвет, она вообще перестает закрашивать фон, всё делает программист.
-    wndclass.hbrBackground = 0; 
 
     ::RegisterClass(&wndclass);
 
@@ -46,7 +48,7 @@ int WINAPI WinMain(
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     // для хранения текущего выделенного прямоугольника между вызовами сообщений.
-    static RECT hoveredRect = { 0, 0, 0, 0 };
+    static RECT hoveredRect = { 0, 0, 0, 0 }; // USER_DATA. Это есть глобальная переменная
 
     int N = 6; // 4/6/9
     int ROWS, COLS;
@@ -74,8 +76,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         // Получаем координаты курсора #include <windowsx.h>
         POINT point;
         point.x = (short)LOWORD(lParam); // point.x = GET_X_LPARAM(lParam); Извлекает младшие 16 бит
-		point.y = (short)HIWORD(lParam); // point.y = GET_Y_LPARAM(lParam); Тут старшие
-		// Приведение к short необходимо, чтобы корректно обрабатывать отрицательные значения при выходе курсора за пределы окна
+        point.y = (short)HIWORD(lParam); // point.y = GET_Y_LPARAM(lParam); Тут старшие
+        // Приведение к short необходимо, чтобы корректно обрабатывать отрицательные значения при выходе курсора за пределы окна
         // так как в противном случае превратится в большое число.
 
         RECT clientRect; // получает текущие физические размеры клиентской области окна в пикселях. Содержит все 4 стороны
@@ -93,10 +95,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         for (int r = 0; r < ROWS; ++r) {
             for (int c = 0; c < COLS; ++c) {
                 RECT rect;
-				rect.left = c * cellW; // сдвиг по горизонтали
-				rect.top = r * cellH; // сдвиг по вертикали
+                rect.left = c * cellW; // сдвиг по горизонтали
+                rect.top = r * cellH; // сдвиг по вертикали
                 // Предотвращаем потерю пикселей при делении
-				rect.right = (c == COLS - 1) ? clientRect.right : (c + 1) * cellW; // Если это последняя колонка, то правый край совпадает с правым краем клиентской области
+                rect.right = (c == COLS - 1) ? clientRect.right : (c + 1) * cellW; // Если это последняя колонка, то правый край совпадает с правым краем клиентской области
                 rect.bottom = (r == ROWS - 1) ? clientRect.bottom : (r + 1) * cellH;
 
                 if (::PtInRect(&rect, point)) { // возвращает TRUE, если точка point лежит внутри rect
@@ -111,7 +113,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         // Если прямоугольник под мышью изменился, запрашиваем перерисовку
         if (!::EqualRect(&hoveredRect, &currentRect)) { // Компьютер перерисовывал окно десятки раз в секунду, даже когда курсор просто ползает внутри одного и того же квадрата
             hoveredRect = currentRect;
-			::InvalidateRect(hWnd, NULL, TRUE); // дескриптор; недейстивительное окно; фон должен быть перерисован
+            ::InvalidateRect(hWnd, NULL, TRUE); // дескриптор; недейстивительное окно; фон должен быть перерисован
         }
         break;
     }
@@ -127,7 +129,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
 
         // Передать дальше, чтобы система могла обрабатывать кнопки окна и рамку!
-		return ::DefWindowProc(hWnd, message, wParam, lParam); // без неё не будет работать кнопка закрытия окна и рамка, т.к неизвестно, что мышь находится на рамке
+        return ::DefWindowProc(hWnd, message, wParam, lParam); // без неё не будет работать кнопка закрытия окна и рамка, т.к неизвестно, что мышь находится на рамке
     }
 
     case WM_PAINT:
@@ -158,9 +160,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         int cellH = clientRect.bottom / ROWS;
 
         // Рисуем вертикальные линии
-		for (int c = 1; c < COLS; ++c) { // начинаем с 1, чтобы не рисовать линию в начале
+        for (int c = 1; c < COLS; ++c) { // начинаем с 1, чтобы не рисовать линию в начале
             ::MoveToEx(hDC, c * cellW, 0, NULL); // переносит перо в стартовую точку над холстом, не оставляя следа.
-            ::LineTo(hDC, c * cellW, clientRect.bottom); // чертит прямую линию до указанных координат (??)
+            ::LineTo(hDC, c * cellW, clientRect.bottom); // чертит прямую линию до указанных координат
         }
 
         // Рисуем горизонтальные линии
@@ -170,7 +172,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
 
         ::SelectObject(hDC, oPen); // возвращает холсту первоначальное перо
-		::DeleteObject(hPen); // удаляем созданное перо, чтобы не было утечки памяти
+        ::DeleteObject(hPen); // удаляем созданное перо, чтобы не было утечки памяти
 
         ::EndPaint(hWnd, &paintstruct);
         break;
