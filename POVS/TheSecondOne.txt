@@ -3,16 +3,12 @@
 
 #include <Windows.h>
 
-struct windowData {
-    RECT hoveredRect;
-};
-
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 int WINAPI WinMain(
     _In_ HINSTANCE hInstance,
-    _In_opt_ HINSTANCE hPrevInstance,
-    _In_ LPSTR lpCmdLine,
+    _In_opt_ HINSTANCE,
+    _In_ LPSTR,
     _In_ int nCmdShow
 )
 {
@@ -23,11 +19,21 @@ int WINAPI WinMain(
     wndclass.hInstance = hInstance;
     wndclass.lpszClassName = szClass;
 
-    ::RegisterClass(&wndclass);
+    RegisterClass(&wndclass);
+
+    // Размеры окна (внешние, вместе с рамкой и заголовком)
+    int winW = 600;
+    int winH = 400;
+
+    // Получаем размеры экрана и вычисляем координаты левого верхнего угла так, чтобы окно было по центру
+    int screenW = ::GetSystemMetrics(SM_CXSCREEN);
+    int screenH = ::GetSystemMetrics(SM_CYSCREEN);
+    int posX = (screenW - winW) / 2;
+    int posY = (screenH - winH) / 2;
 
     // Создаём главное окно
     HWND hWnd = ::CreateWindow(szClass, TEXT("Test - Rectangles"), WS_OVERLAPPEDWINDOW,
-        CW_USEDEFAULT, CW_USEDEFAULT, 600, 400, NULL, NULL, hInstance, NULL);
+        posX, posY, winW, winH, NULL, NULL, hInstance, NULL);
 
     if (hWnd == NULL) {
         return -1;
@@ -36,98 +42,117 @@ int WINAPI WinMain(
     ::ShowWindow(hWnd, nCmdShow);
     // ::UpdateWindow(hWnd);
 
+    // Цикл сообщений. GetMessage возвращает 0, когда пришло WM_QUIT
     MSG msg;
     while (::GetMessage(&msg, NULL, 0, 0)) {
         // ::TranslateMessage(&msg);
-        ::DispatchMessage(&msg);
+        ::DispatchMessage(&msg); // отправляем сообщение в WndProc
     }
 
     return 0;
 }
 
+void quantityOfRectangles(int* pCols, int* pRows)
+{
+    const int N = 9;
+    switch (N) {
+    case 4:  *pCols = 2; *pRows = 2; break;
+    case 6:  *pCols = 3; *pRows = 2; break;
+    case 9:  *pCols = 3; *pRows = 3; break;
+    default: *pCols = 2; *pRows = 2; break;
+    }
+}
+
+// Возвращает прямоугольник клетки с номером index.
+// Клетки нумеруются слева направо, сверху вниз: для 3x3 это 0 1 2 / 3 4 5 / 6 7 8.
+RECT GetCellRect(HWND hWnd, int index)
+{
+    RECT clientRect;
+    ::GetClientRect(hWnd, &clientRect); // left = 0 и top = 0
+
+    int cols, rows;
+    quantityOfRectangles(&cols, &rows);
+
+    // Вычисляем ширину и высоту одной ячейки
+    // Значение right равно точной ширине области в пикселях, а bottom — её высоте
+    int cellW = clientRect.right / cols;
+    int cellH = clientRect.bottom / rows;
+
+    int col = index % cols; // остаток от деления - номер столбца
+    int row = index / cols; // целая часть - номер строки
+
+    RECT rect;
+    rect.left = col * cellW; // сдвиг по горизонтали
+    rect.top = row * cellH;  // сдвиг по вертикали
+    // Если это последняя колонка, то правый край совпадает с правым краем клиентской области
+    rect.right = (col == cols - 1) ? clientRect.right : (col + 1) * cellW;
+    rect.bottom = (row == rows - 1) ? clientRect.bottom : (row + 1) * cellH;
+    return rect; // точные координаты одной конкретной клетки на экране
+}
+
+// Возвращает номер клетки, в которой лежит точка pt. Если точка вне клеток, возвращает -1.
+int HoverIndex(HWND hWnd, POINT pt)
+{
+    int cols, rows;
+    quantityOfRectangles(&cols, &rows);
+
+    // Определяем, в каком прямоугольнике находится курсор: перебираем клетки по номерам
+    for (int i = 0; i < cols * rows; ++i) {
+        RECT rc = GetCellRect(hWnd, i);
+        if (::PtInRect(&rc, pt)) { // возвращает TRUE, если точка pt лежит внутри rc
+            return i;              // нашли - возвращаем номер клетки
+        }
+    }
+    return -1;
+}
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    // для хранения текущего выделенного прямоугольника между вызовами сообщений.
-    static RECT hoveredRect = { 0, 0, 0, 0 }; // USER_DATA. Это есть глобальная переменная
-
-    int N = 6; // 4/6/9
-    int ROWS, COLS;
-
-    switch (N) {
-    case 4:
-        ROWS = 2; COLS = 2;
-        break;
-    case 6:
-        ROWS = 2; COLS = 3; // Или наоборот
-        break;
-    case 9:
-        ROWS = 3; COLS = 3;
-        break;
-    default:
-        // Иначе оставляем 4
-        ROWS = 2; COLS = 2;
-        break;
-    }
-
     switch (message) {
+
+    case WM_CREATE:
+        // Окно только что создано. Сохраняем в "USERDATA" окна значение -1: "курсор ни над одной клеткой"
+        ::SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)-1);
+        return 0;
+
+    case WM_SIZE:
+    {
+        // Размер окна изменился: старая сетка и подсветка уже не подходят.
+        // Сбрасываем подсветку (она вернётся при первом же движении мыши) и просим перерисовать всё окно.
+        ::SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)-1);
+        ::InvalidateRect(hWnd, NULL, FALSE); // окно; область(вся); bErase - не позволяет стирать всё окно, "новый ватман"
+        return 0;
+    }
 
     case WM_MOUSEMOVE:
     {
-        // Получаем координаты курсора #include <windowsx.h>
         POINT point;
-        point.x = (short)LOWORD(lParam); // point.x = GET_X_LPARAM(lParam); Извлекает младшие 16 бит
-        point.y = (short)HIWORD(lParam); // point.y = GET_Y_LPARAM(lParam); Тут старшие
+        point.x = (short)LOWORD(lParam); // Извлекает младшие 16 бит
+        point.y = (short)HIWORD(lParam);
         // Приведение к short необходимо, чтобы корректно обрабатывать отрицательные значения при выходе курсора за пределы окна
         // так как в противном случае превратится в большое число.
 
-        RECT clientRect; // получает текущие физические размеры клиентской области окна в пикселях. Содержит все 4 стороны
-        ::GetClientRect(hWnd, &clientRect); // Для клиентской области Windows всегда устанавливает left = 0 и top = 0
+        int oldIndex = (int)::GetWindowLongPtr(hWnd, GWLP_USERDATA); // клетка, подсвеченная сейчас
+        int newIndex = HoverIndex(hWnd, point);                   // клетка под курсором теперь
 
-        // Вычисляем ширину и высоту одной ячейки
-        // Значение right равно точной ширине области в пикселях, а bottom — её высоте.
-        int cellW = clientRect.right / COLS;
-        int cellH = clientRect.bottom / ROWS;
-
-        RECT currentRect = { 0, 0, 0, 0 };
-        bool found = false;
-
-        // Определяем, в каком прямоугольнике находится курсор
-        for (int r = 0; r < ROWS; ++r) {
-            for (int c = 0; c < COLS; ++c) {
-                RECT rect;
-                rect.left = c * cellW; // сдвиг по горизонтали
-                rect.top = r * cellH; // сдвиг по вертикали
-                // Предотвращаем потерю пикселей при делении
-                rect.right = (c == COLS - 1) ? clientRect.right : (c + 1) * cellW; // Если это последняя колонка, то правый край совпадает с правым краем клиентской области
-                rect.bottom = (r == ROWS - 1) ? clientRect.bottom : (r + 1) * cellH;
-
-                if (::PtInRect(&rect, point)) { // возвращает TRUE, если точка point лежит внутри rect
-                    currentRect = rect;
-                    found = true;
-                    break;
-                }
-            }
-            if (found) break;
+        // Если прямоугольник под мышью изменился, запрашиваем перерисовку.
+        // Так окно не перерисовывается десятки раз в секунду, пока курсор двигается внутри одного и того же прямоугольника.
+        if (oldIndex != newIndex) {
+            ::SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)newIndex); // запоминаем новую клетку
+            // Сама отрисовка происходит только в WM_PAINT. FALSE: фон не стираем отдельно, WM_PAINT всё равно закрасит его белым.
+            ::InvalidateRect(hWnd, NULL, FALSE);
         }
-
-        // Если прямоугольник под мышью изменился, запрашиваем перерисовку
-        if (!::EqualRect(&hoveredRect, &currentRect)) { // Компьютер перерисовывал окно десятки раз в секунду, даже когда курсор просто ползает внутри одного и того же квадрата
-            hoveredRect = currentRect;
-            ::InvalidateRect(hWnd, NULL, TRUE); // дескриптор; недейстивительное окно; фон должен быть перерисован
-        }
-        break;
+        return 0;
     }
 
     case WM_NCMOUSEMOVE:
     {
-        // Когда мышь переходит на неклиентскую область,
-        // сбрасываем выделение и восстанавливаем фон.
-        RECT emptyRect = { 0, 0, 0, 0 };
-        if (!::EqualRect(&hoveredRect, &emptyRect)) {
-            hoveredRect = emptyRect;
-            ::InvalidateRect(hWnd, NULL, TRUE);
+        // Когда мышь переходит на неклиентскую область (заголовок, рамка), сбрасываем выделение и восстанавливаем фон.
+        int oldIndex = (int)::GetWindowLongPtr(hWnd, GWLP_USERDATA);
+        if (oldIndex != -1) { // какая-то клетка была подсвечена
+            ::SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)-1);
+            ::InvalidateRect(hWnd, NULL, FALSE);
         }
-
         // Передать дальше, чтобы система могла обрабатывать кнопки окна и рамку!
         return ::DefWindowProc(hWnd, message, wParam, lParam); // без неё не будет работать кнопка закрытия окна и рамка, т.к неизвестно, что мышь находится на рамке
     }
@@ -135,51 +160,55 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_PAINT:
     {
         PAINTSTRUCT paintstruct;
-        HDC hDC = ::BeginPaint(hWnd, &paintstruct);
+        HDC hDC = ::BeginPaint(hWnd, &paintstruct); // получаем контекст устройства для рисования
 
         RECT clientRect;
         ::GetClientRect(hWnd, &clientRect);
 
-        HBRUSH hBgBrsh = (HBRUSH)::GetStockObject(WHITE_BRUSH);
+        int cols, rows;
+        quantityOfRectangles(&cols, &rows);
+
+        //Весь фон - белый
+        HBRUSH hBgBrsh = (HBRUSH)::GetStockObject(WHITE_BRUSH); // стандартная кисть, удалять её не нужно
         ::FillRect(hDC, &clientRect, hBgBrsh);
-        // ::DeleteObject(hBgBrsh); // Если не удалять кисти после использования, произойдет утечка памяти, и интерфейс начнет рассыпаться.
 
-        // Если есть выделенный прямоугольник, закрашиваем его другим цветом
-        RECT emptyRect = { 0, 0, 0, 0 };
-        if (!::EqualRect(&hoveredRect, &emptyRect)) {
-            HBRUSH hBrsh = ::CreateSolidBrush(RGB(255, 110, 0)); // Светло-голубой цвет - 173, 216, 230
-            ::FillRect(hDC, &hoveredRect, hBrsh);
-            ::DeleteObject(hBrsh);
+        //Клетка под курсором, если курсор над какой-то клеткой
+        int index = (int)::GetWindowLongPtr(hWnd, GWLP_USERDATA);
+        if (index != -1) {
+            RECT rcHover = GetCellRect(hWnd, index);
+            HBRUSH hBrsh = ::CreateSolidBrush(RGB(229, 103, 23)); 
+            ::FillRect(hDC, &rcHover, hBrsh);
+            ::DeleteObject(hBrsh); // кисть создали сами, значит удаляем
         }
 
-        // Отрисовка линий сетки (карандаш 2 пикселя)
-        HPEN hPen = ::CreatePen(PS_SOLID, 2, RGB(0, 0, 0)); // Сплошная линия(??); толщина; Черный цвет
-        HPEN oPen = (HPEN)::SelectObject(hDC, hPen); // привязываем созданное перо к холсту
+        // Линии сетки толщиной 2 пикселя - поверх заливки
+        HPEN hPen = ::CreatePen(PS_SOLID, 2, RGB(0, 0, 0));
+        HPEN oPen = (HPEN)::SelectObject(hDC, hPen); // запоминаем старое перо
 
-        int cellW = clientRect.right / COLS;
-        int cellH = clientRect.bottom / ROWS;
+        int cellW = clientRect.right / cols;
+        int cellH = clientRect.bottom / rows;
 
-        // Рисуем вертикальные линии
-        for (int c = 1; c < COLS; ++c) { // начинаем с 1, чтобы не рисовать линию в начале
-            ::MoveToEx(hDC, c * cellW, 0, NULL); // переносит перо в стартовую точку над холстом, не оставляя следа.
-            ::LineTo(hDC, c * cellW, clientRect.bottom); // чертит прямую линию до указанных координат
+        for (int c = 1; c < cols; ++c) { // вертикальные линии
+            ::MoveToEx(hDC, c * cellW, 0, NULL);
+            ::LineTo(hDC, c * cellW, clientRect.bottom);
         }
 
-        // Рисуем горизонтальные линии
-        for (int r = 1; r < ROWS; ++r) {
+        for (int r = 1; r < rows; ++r) { // горизонтальные линии
             ::MoveToEx(hDC, 0, r * cellH, NULL);
             ::LineTo(hDC, clientRect.right, r * cellH);
         }
 
-        ::SelectObject(hDC, oPen); // возвращает холсту первоначальное перо
-        ::DeleteObject(hPen); // удаляем созданное перо, чтобы не было утечки памяти
+        // Вернуть старое перо и удалить своё
+        ::SelectObject(hDC, oPen);
+        ::DeleteObject(hPen);
 
-        ::EndPaint(hWnd, &paintstruct);
-        break;
+        ::EndPaint(hWnd, &paintstruct); // закончили рисование
+        return 0;
     }
 
     case WM_DESTROY:
-        ::PostQuitMessage(0);
+        // Память мы не выделяли (данные лежат прямо в USERDATA), поэтому освобождать нечего.
+        ::PostQuitMessage(0); // кладём в очередь WM_QUIT, цикл сообщений завершится
         return 0;
     }
 
