@@ -18,16 +18,15 @@ int WINAPI WinMain(
     wndclass.lpfnWndProc = WndProc;
     wndclass.hInstance = hInstance;
     wndclass.lpszClassName = szClass;
+    wndclass.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
 
     RegisterClass(&wndclass);
-
-    // Размеры окна (внешние, вместе с рамкой и заголовком)
-    int winW = 600;
-    int winH = 400;
 
     // Получаем размеры экрана и вычисляем координаты левого верхнего угла так, чтобы окно было по центру
     int screenW = ::GetSystemMetrics(SM_CXSCREEN);
     int screenH = ::GetSystemMetrics(SM_CYSCREEN);
+    int winW = screenW * 0.5;
+    int winH = screenH * 0.5;
     int posX = (screenW - winW) / 2;
     int posY = (screenH - winH) / 2;
 
@@ -61,6 +60,7 @@ void quantityOfRectangles(int* pCols, int* pRows)
     case 9:  *pCols = 3; *pRows = 3; break;
     default: *pCols = 2; *pRows = 2; break;
     }
+    // это тоже неэффективно
 }
 
 // Возвращает прямоугольник клетки с номером index.
@@ -87,7 +87,7 @@ RECT GetCellRect(HWND hWnd, int index)
     // Если это последняя колонка, то правый край совпадает с правым краем клиентской области
     rect.right = (col == cols - 1) ? clientRect.right : (col + 1) * cellW;
     rect.bottom = (row == rows - 1) ? clientRect.bottom : (row + 1) * cellH;
-    return rect; // точные координаты одной конкретной клетки на экране
+    return rect; // так возвращать неэффективно(!)
 }
 
 // Возвращает номер клетки, в которой лежит точка pt. Если точка вне клеток, возвращает -1.
@@ -157,6 +157,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         return ::DefWindowProc(hWnd, message, wParam, lParam); // без неё не будет работать кнопка закрытия окна и рамка, т.к неизвестно, что мышь находится на рамке
     }
 
+    case WM_MOUSELEAVE:
+
+
     case WM_PAINT:
     {
         PAINTSTRUCT paintstruct;
@@ -176,7 +179,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         int index = (int)::GetWindowLongPtr(hWnd, GWLP_USERDATA);
         if (index != -1) {
             RECT rcHover = GetCellRect(hWnd, index);
-            HBRUSH hBrsh = ::CreateSolidBrush(RGB(229, 103, 23)); 
+            HBRUSH hBrsh = ::CreateSolidBrush(RGB(229, 103, 23));
+
+            //вот ето не есть хорошо
             ::FillRect(hDC, &rcHover, hBrsh);
             ::DeleteObject(hBrsh); // кисть создали сами, значит удаляем
         }
