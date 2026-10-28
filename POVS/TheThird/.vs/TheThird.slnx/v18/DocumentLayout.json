@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\All_studies_files\\POVS\\TheThird\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{08E9D997-16A2-48AB-85C0-A2C9410D9D06}|TheThird\\TheThird.vcxproj|D:\\All_studies_files\\POVS\\TheThird\\TheThird\\TheThird.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{08E9D997-16A2-48AB-85C0-A2C9410D9D06}|TheThird\\TheThird.vcxproj|solutionrelative:TheThird\\TheThird.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "TheThird.cpp",
+              "DocumentMoniker": "D:\\All_studies_files\\POVS\\TheThird\\TheThird\\TheThird.cpp",
+              "RelativeDocumentMoniker": "TheThird\\TheThird.cpp",
+              "ToolTip": "D:\\All_studies_files\\POVS\\TheThird\\TheThird\\TheThird.cpp",
+              "RelativeToolTip": "TheThird\\TheThird.cpp",
+              "ViewState": "AgIAAJIAAAAAAAAAAAAqwPEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-10-26T14:38:59.066Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
