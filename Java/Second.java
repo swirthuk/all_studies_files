@@ -34,7 +34,7 @@ class Second {
     }
 
     private boolean checkAllowedCharacters() {
-        return password != null && password.matches("\\w+");
+        return password != null && password.matches("\\w+"); // + - один или более раз английский символ
     }
 
     private boolean checkUppercase() {
@@ -68,7 +68,7 @@ class Second {
         } else {
             System.out.println("Результат: Пароль НЕнадежный (не соответствует требованиям).");
             System.out.println("1. Английские символы.");
-            System.out.println("2. Должен содержать как минимум одну заглавную и маленькую буквы.");
+            System.out.println("2. Должен содержать как минимум одну заглавную и одну маленькую буквы.");
             System.out.println("3. Должен содержать цифру.");
         }
     }
