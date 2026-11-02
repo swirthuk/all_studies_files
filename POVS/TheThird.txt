@@ -1,25 +1,17 @@
 #define STRICT
 #define WIN32_LEAN_AND_MEAN
+#define M_WIDTH 3000
+#define N_HEIGHT 2000
+#define K_POINTS 500
+#define RADIUS 50
+
 
 #include <Windows.h>
 #include <stdlib.h> // rand()
-
-// Идентификаторы меню теперь константные выражения, как это принято в современном C++
-constexpr int IDM_EXIT = 40001;
-constexpr int IDM_SQUARES = 40002;
-constexpr int IDM_CIRCLES = 40003;
+#include "resource.h"
 
 struct AppState {
-    // Константы времени компиляции (теперь они живут только внутри структуры, глобальных параметров нет)
-    static constexpr int M_WIDTH = 3000;
-    static constexpr int N_HEIGHT = 2000;
-    static constexpr int K_POINTS = 500;
-    static constexpr int RADIUS = 50;
-
     POINT points[K_POINTS]; // Массив сгенерированных координат
-    HBRUSH brushes[8];      // Кэш цветных кистей
-    int scrollX;            // Текущий сдвиг ползунка по горизонтали
-    int scrollY;            // Текущий сдвиг ползунка по вертикали
     BOOL isCircles;         // Режим отрисовки: FALSE = Квадраты, TRUE = Круги
 };
 
@@ -34,8 +26,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _In
     wndclass.hInstance = hInstance;
     wndclass.lpszClassName = szClass;
     wndclass.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-    // Флаги перерисовки строго необходимы для предотвращения графических артефактов
-    wndclass.style = CS_HREDRAW | CS_VREDRAW;
+    wndclass.lpszMenuName = MAKEINTRESOURCE(IDR_MENU1); // Привязка меню из файла ресурсов
 
     if (!::RegisterClass(&wndclass)) {
         return -1;
@@ -44,13 +35,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _In
     AppState state = {};
     srand(GetTickCount()); // установка стартовой точки (зерна) для генератора псевдослучайных чисел rand().
 
-    for (int i = 0; i < AppState::K_POINTS; ++i) {
-        state.points[i].x = rand() % AppState::M_WIDTH;
-        state.points[i].y = rand() % AppState::N_HEIGHT;
-    }
-
-    for (int i = 0; i < 8; ++i) {
-        state.brushes[i] = ::CreateSolidBrush(RGB(223, 223, i * 32)); // Цикл генерирует 8 разных кистей и сохраняет их в память программы (state.brushes).
+    for (int i = 0; i < K_POINTS; ++i) {
+        state.points[i].x = rand() % M_WIDTH;
+        state.points[i].y = rand() % N_HEIGHT;
     }
 
     int screenW = ::GetSystemMetrics(SM_CXSCREEN); // ширина монитора в пикселях
@@ -61,23 +48,15 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _In
     HWND hWnd = ::CreateWindow(szClass, szClass,
         WS_OVERLAPPEDWINDOW | WS_HSCROLL | WS_VSCROLL,
         (screenW - winW) / 2, (screenH - winH) / 2, winW, winH,
-        NULL, NULL, hInstance, &state); // hMenu заменен на NULL, так как меню собирается в WM_CREATE
+        NULL, NULL, hInstance, &state); // Передаем &state в lParam
 
-    if (!hWnd) {
-        // DestroyMenu(hMenu) убрано, так как меню здесь еще не существует
-        for (int i = 0; i < 8; ++i) ::DeleteObject(state.brushes[i]); // удаление кистей из памяти, если окно не создалось
-        return -1;
-    }
+    if (!hWnd) return -1;
 
     ::ShowWindow(hWnd, nCmdShow);
 
     MSG msg;
     while (::GetMessage(&msg, NULL, 0, 0)) {
         ::DispatchMessage(&msg);
-    }
-
-    for (int i = 0; i < 8; ++i) {
-        ::DeleteObject(state.brushes[i]);
     }
 
     return 0;
@@ -91,28 +70,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     case WM_CREATE:
     {
-        // 1. Привязываем наши данные (AppState) к "карману" окна
+        //Привязываем наши данные (AppState) к "карману" окна
         ::SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)((CREATESTRUCT*)lParam)->lpCreateParams);
-
-        // 2. Создаем пустые каркасы для меню
-        HMENU hMainMenu = ::CreateMenu();         // Главная полоска меню (сверху)
-        HMENU hFileMenu = ::CreatePopupMenu();    // Выпадающий список "Файл"
-        HMENU hViewMenu = ::CreatePopupMenu();    // Выпадающий список "Изображение"
-
-        // 3. Наполняем выпадающие списки кнопками
-        ::AppendMenu(hFileMenu, MF_STRING, IDM_EXIT, TEXT("Выход"));
-
-        // Квадраты по умолчанию включены, поэтому делаем кнопку серой (MF_GRAYED)
-        ::AppendMenu(hViewMenu, MF_STRING | MF_GRAYED, IDM_SQUARES, TEXT("Квадраты"));
-        ::AppendMenu(hViewMenu, MF_STRING | MF_ENABLED, IDM_CIRCLES, TEXT("Круги"));
-
-        // 4. Прикрепляем списки к главной полоске
-        ::AppendMenu(hMainMenu, MF_POPUP, (UINT_PTR)hFileMenu, TEXT("Файл"));
-        ::AppendMenu(hMainMenu, MF_POPUP, (UINT_PTR)hViewMenu, TEXT("Изображение"));
-
-        // 5. ФИНАЛ: Привязываем готовое собранное меню к нашему окну
-        ::SetMenu(hWnd, hMainMenu);
-
         return 0;
     }
 
@@ -122,32 +81,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         SCROLLINFO scrollinfo = {};
         scrollinfo.cbSize = sizeof(scrollinfo); // сообщаем Windows размер структуры в байтах
-        scrollinfo.fMask = SIF_RANGE | SIF_PAGE | SIF_POS; // только настройки диапазона, размера страницы и позиции ползунка
+        scrollinfo.fMask = SIF_RANGE | SIF_PAGE; // только настройки диапазона и размера страницы
 
-        scrollinfo.nMax = AppState::M_WIDTH - 1; // размер всего виртуального холста
-        scrollinfo.nPage = LOWORD(lParam); //Windows использует это значение, чтобы высчитать длину самого ползунка.
-        //Если окно растянуть шире 3000 пикселей, система поймет, что холст влезает целиком, и автоматически спрячет скроллбар.
-        scrollinfo.nPos = pState->scrollX; // где ползунок должен стоять
-        ::SetScrollInfo(hWnd, SB_HORZ, &scrollinfo, TRUE); //TRUE говорит системе немедленно перерисовать полосу прокрутки с новыми пропорциями
+        scrollinfo.nMax = M_WIDTH - 1; // размер всего виртуального холста
+        scrollinfo.nPage = LOWORD(lParam); // Windows использует это значение, чтобы высчитать длину самого ползунка.
+        // Если окно растянуть шире 3000 пикселей, система поймет, что холст влезает целиком, и автоматически спрячет скроллбар.
+        ::SetScrollInfo(hWnd, SB_HORZ, &scrollinfo, TRUE); // TRUE говорит системе немедленно перерисовать полосу прокрутки с новыми пропорциями
 
-        // --- ЗАМЕНА GetScrollPos ---
-        scrollinfo.fMask = SIF_POS; // Указываем, что хотим прочитать только позицию
-        ::GetScrollInfo(hWnd, SB_HORZ, &scrollinfo);
-        pState->scrollX = scrollinfo.nPos; // Windows может подкорректировать положение ползунка, если оно вышло за пределы диапазона при растяжении окна.
-        // SB - ScrollBar, HORZ - Horizontal, VERT - Vertical
-
-        // ВАЖНО: возвращаем полную маску для установки следующих параметров вертикального скролла
-        scrollinfo.fMask = SIF_RANGE | SIF_PAGE | SIF_POS;
-        scrollinfo.nMax = AppState::N_HEIGHT - 1;
+        scrollinfo.nMax = N_HEIGHT - 1;
         scrollinfo.nPage = HIWORD(lParam);
-        scrollinfo.nPos = pState->scrollY;
         ::SetScrollInfo(hWnd, SB_VERT, &scrollinfo, TRUE);
-
-        // --- ЗАМЕНА GetScrollPos ---
-        scrollinfo.fMask = SIF_POS; // Снова просим только позицию
-        ::GetScrollInfo(hWnd, SB_VERT, &scrollinfo);
-        pState->scrollY = scrollinfo.nPos;
-
         return 0;
     }
 
@@ -156,19 +99,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         if (!pState) return 0;
 
         switch (LOWORD(wParam)) { // система передает служебную информацию о клике. Интересует только младшая половина потому что именно туда Windows аккуратно кладет числовой ID пункта меню
-        case IDM_EXIT:
+        case ID_EXIT:
             ::DestroyWindow(hWnd);
             break;
 
-        case IDM_SQUARES:
-        case IDM_CIRCLES:
+        case ID_VIEW_SQUARES:
+        case ID_VIEW_CIRCLES:
         {
-            pState->isCircles = (LOWORD(wParam) == IDM_CIRCLES); // равен ли ID нажатой кнопки ID кругов? BOOL 
+            pState->isCircles = (LOWORD(wParam) == ID_VIEW_CIRCLES); // равен ли ID нажатой кнопки ID кругов? BOOL 
             HMENU hMenu = ::GetMenu(hWnd);
-            ::EnableMenuItem(hMenu, IDM_SQUARES, MF_BYCOMMAND | (pState->isCircles ? MF_ENABLED : MF_GRAYED));
+            ::EnableMenuItem(hMenu, ID_VIEW_SQUARES, MF_BYCOMMAND | (pState->isCircles ? MF_ENABLED : MF_GRAYED));
             // MF_BYCOMMAND говорит системе искать пункт именно по его ID
-            ::EnableMenuItem(hMenu, IDM_CIRCLES, MF_BYCOMMAND | (pState->isCircles ? MF_GRAYED : MF_ENABLED));
-            ::InvalidateRect(hWnd, NULL, TRUE); //объявляет всю клиентскую область окна недействительной, полностью стирает до фона и вызывает WM_PAINT для перерисовки
+            ::EnableMenuItem(hMenu, ID_VIEW_CIRCLES, MF_BYCOMMAND | (pState->isCircles ? MF_GRAYED : MF_ENABLED));
+            ::InvalidateRect(hWnd, NULL, TRUE); // объявляет всю клиентскую область окна недействительной, полностью стирает до фона и вызывает WM_PAINT для перерисовки
             break;
         }
         }
@@ -177,15 +120,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     case WM_KEYDOWN:
     {
-        //Вся логика прокрутки уже написана в WM_HSCROLL и WM_VSCROLL
-        switch (wParam) { //wParam содержит виртуальный код клавиши
-            //::SendMessage вызывает оконную процедуру этого же окна и ждёт завершения обработки
-            // Какая полоса сработала; задаёт код запроса прокрутки;
+        // Вся логика прокрутки уже написана в WM_HSCROLL и WM_VSCROLL
+        switch (wParam) { // wParam содержит виртуальный код клавиши
+            // ::SendMessage вызывает оконную процедуру этого же окна и ждёт завершения обработки
+            // Какая полоса сработала; задаёт код запроса прокрутки; 
         case VK_UP:    ::SendMessage(hWnd, WM_VSCROLL, SB_LINEUP, 0); break; // вверх
         case VK_DOWN:  ::SendMessage(hWnd, WM_VSCROLL, SB_LINEDOWN, 0); break; // вниз
         case VK_PRIOR: ::SendMessage(hWnd, WM_VSCROLL, SB_PAGEUP, 0); break; // вверх на nPage
         case VK_NEXT:  ::SendMessage(hWnd, WM_VSCROLL, SB_PAGEDOWN, 0); break; // вниз на nPage
-        case VK_LEFT:  ::SendMessage(hWnd, WM_HSCROLL, SB_LINELEFT, 0); break; // влево
+        case VK_LEFT:  ::SendMessage(hWnd, WM_HSCROLL, SB_LINELEFT, 0); break; // влево 
         case VK_RIGHT: ::SendMessage(hWnd, WM_HSCROLL, SB_LINERIGHT, 0); break; // вправо
         case VK_HOME:  ::SendMessage(hWnd, WM_HSCROLL, SB_LEFT, 0); break; // в крайнее левое положение
         case VK_END:   ::SendMessage(hWnd, WM_HSCROLL, SB_RIGHT, 0); break; // в крайнее правое положение
@@ -201,7 +144,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         scrollinfo.cbSize = sizeof(scrollinfo); // сообщает системе версию и размер структуры.
         scrollinfo.fMask = SIF_ALL; // означает «заполни всё»: SIF_RANGE | SIF_PAGE | SIF_POS | SIF_TRACKPOS.
         ::GetScrollInfo(hWnd, SB_HORZ, &scrollinfo);
-        //nMin, nMax (диапазон), nPage (размер страницы, то есть ширина видимой области), nPos (текущая позиция), nTrackPos (позиция ползунка при перетаскивании).
+        // nMin, nMax (диапазон), nPage (размер страницы, то есть ширина видимой области), nPos (текущая позиция), nTrackPos (позиция ползунка при перетаскивании).
 
         int oldPos = scrollinfo.nPos; // изменилось ли что-то, и узнать величину сдвига для ScrollWindow
         switch (LOWORD(wParam)) {
@@ -219,7 +162,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         ::GetScrollInfo(hWnd, SB_HORZ, &scrollinfo);
 
         if (scrollinfo.nPos != oldPos) {
-            pState->scrollX = scrollinfo.nPos; // хранит смещение, которое использует WM_PAINT
             ::ScrollWindow(hWnd, oldPos - scrollinfo.nPos, 0, NULL, NULL); // копирует уже нарисованные пиксели в новое место и помечает освободившуюся полосу как недействительную
         }
         return 0;
@@ -229,29 +171,28 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
         if (!pState) return 0;
 
-        SCROLLINFO si = {};
-        si.cbSize = sizeof(si);
-        si.fMask = SIF_ALL;
-        ::GetScrollInfo(hWnd, SB_VERT, &si);
+        SCROLLINFO scrollinfo = {};
+        scrollinfo.cbSize = sizeof(scrollinfo);
+        scrollinfo.fMask = SIF_ALL;
+        ::GetScrollInfo(hWnd, SB_VERT, &scrollinfo);
 
-        int oldPos = si.nPos;
+        int oldPos = scrollinfo.nPos;
         switch (LOWORD(wParam)) {
-        case SB_TOP:        si.nPos = si.nMin; break;
-        case SB_BOTTOM:     si.nPos = si.nMax; break;
-        case SB_LINEUP:     si.nPos -= 20; break; // 20pt
-        case SB_LINEDOWN:   si.nPos += 20; break;
-        case SB_PAGEUP:     si.nPos -= si.nPage; break;
-        case SB_PAGEDOWN:   si.nPos += si.nPage; break;
-        case SB_THUMBTRACK: si.nPos = si.nTrackPos; break;
+        case SB_TOP:        scrollinfo.nPos = scrollinfo.nMin; break;
+        case SB_BOTTOM:     scrollinfo.nPos = scrollinfo.nMax; break;
+        case SB_LINEUP:     scrollinfo.nPos -= 20; break; // 20pt
+        case SB_LINEDOWN:   scrollinfo.nPos += 20; break;
+        case SB_PAGEUP:     scrollinfo.nPos -= scrollinfo.nPage; break;
+        case SB_PAGEDOWN:   scrollinfo.nPos += scrollinfo.nPage; break;
+        case SB_THUMBTRACK: scrollinfo.nPos = scrollinfo.nTrackPos; break;
         }
 
-        si.fMask = SIF_POS;
-        ::SetScrollInfo(hWnd, SB_VERT, &si, TRUE);
-        ::GetScrollInfo(hWnd, SB_VERT, &si);
+        scrollinfo.fMask = SIF_POS;
+        ::SetScrollInfo(hWnd, SB_VERT, &scrollinfo, TRUE);
+        ::GetScrollInfo(hWnd, SB_VERT, &scrollinfo);
 
-        if (si.nPos != oldPos) {
-            pState->scrollY = si.nPos;
-            ::ScrollWindow(hWnd, 0, oldPos - si.nPos, NULL, NULL);
+        if (scrollinfo.nPos != oldPos) {
+            ::ScrollWindow(hWnd, 0, oldPos - scrollinfo.nPos, NULL, NULL);
         }
         return 0;
     }
@@ -262,25 +203,37 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         HDC hDC = ::BeginPaint(hWnd, &paintstruct);
 
         if (pState) {
-            ::SetBkMode(hDC, TRANSPARENT); // TRANSPARENT текст рисуется без собственной подложки, поэтому цвет фигуры просвечивает за цифрами.
             ::SetTextAlign(hDC, TA_CENTER); // TA_CENTER координата x в TextOut считается центром текста по горизонтали номер выравнивается по центру фигуры
+
+            // Читаем актуальный сдвиг напрямую у окна прямо перед рендером
+            SCROLLINFO si = {};
+            si.cbSize = sizeof(si);
+            si.fMask = SIF_POS;
+            ::GetScrollInfo(hWnd, SB_HORZ, &si);
+            int currentScrollX = si.nPos;
+
+            ::GetScrollInfo(hWnd, SB_VERT, &si);
+            int currentScrollY = si.nPos;
 
             BOOL(WINAPI * drawShape)(HDC, int, int, int, int) = pState->isCircles ? ::Ellipse : ::Rectangle;
             // Ellipse и Rectangle имеют одинаковую сигнатуру => режим выбирается один раз до цикла, а внутри цикла вызывается просто drawShape(...)
             // переменная может хранить в себе любую функцию, которая возвращает BOOL и принимает 5 аргументов (холст HDC и 4 координаты)
-            HBRUSH oBrush = (HBRUSH)::SelectObject(hDC, pState->brushes[0]);
 
-            for (int i = 0; i < AppState::K_POINTS; ++i) {
-                int cx = pState->points[i].x - pState->scrollX;
-                int cy = pState->points[i].y - pState->scrollY;
+            // Используем системную белую кисть (она бесплатная, её не нужно создавать и удалять)
+            HBRUSH hWhiteBrush = (HBRUSH)::GetStockObject(WHITE_BRUSH);
+            HBRUSH oBrush = (HBRUSH)::SelectObject(hDC, hWhiteBrush);
 
-                RECT rcShape = { cx - AppState::RADIUS, cy - AppState::RADIUS, cx + AppState::RADIUS, cy + AppState::RADIUS };
+            for (int i = 0; i < K_POINTS; ++i) {
+                int cx = pState->points[i].x - currentScrollX;
+                int cy = pState->points[i].y - currentScrollY;
+
+                RECT rcShape = { cx - RADIUS, cy - RADIUS, cx + RADIUS, cy + RADIUS };
                 RECT dummy;
 
                 if (::IntersectRect(&dummy, &rcShape, &paintstruct.rcPaint)) {
                     // пересекается ли габаритный прямоугольник нашей текущей фигуры с зоной перерисовки
-                    ::SelectObject(hDC, pState->brushes[i % 8]);
                     drawShape(hDC, rcShape.left, rcShape.top, rcShape.right, rcShape.bottom);
+
                     TCHAR szBuf[16]; // берет порядковый номер фигуры i + 1 и превращает его в текстовую строку, записывая в буфер szBuf
                     int len = ::wsprintf(szBuf, TEXT("%d"), i + 1);
                     ::TextOut(hDC, cx, cy, szBuf, len); // вывод текста в центр фигуры
