@@ -3,6 +3,7 @@ import java.util.Scanner;
 class Second {
     private String password;
 
+    // задача на формирование шаблона
     private static final String COLOR_GREEN = "\u001B[32m";
     private static final String COLOR_RESET = "\u001B[0m";
     private static final int MIN_PASSWORD_LENGTH = 8;
